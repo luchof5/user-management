@@ -1,1 +1,10 @@
-[]
+[
+    {
+        "id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+        "nombre": "Juan",
+        "apellido": "Pérez",
+        "email": "juan.perez@example.com",
+        "password": "$2b$10$OAE.pct.PpNl5jAvK4DuwOeFRGdzEnlp5CMtZhu3ZVC9Pm9A0ySgC",
+        "isLoggedIn": false
+    }
+]
