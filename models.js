@@ -6,6 +6,8 @@ import validarEmail from './utils/validateEmail.js'
 
 // Averiguar como "activar" la lectura de las variables de entorno del archivo .env (dotenv)
 import dotenv from 'dotenv'
+import { on } from 'node:events'
+import { get } from 'node:http'
 
 // 1° recuperar variables de entorno
 dotenv.config()
@@ -83,6 +85,10 @@ const addUser = (userData) => {
 
     const findEmail = users.find((user) => user.email === email)
 
+    if (findEmail) {
+      throw new Error('Email already exists')
+    }
+
     // hashea la contraseña antes de registrar al usuario
     const hashedPassword = createHash('sha256').update(password).digest('hex')
 
@@ -105,19 +111,94 @@ const addUser = (userData) => {
   }
 }
 
-console.log(addUser)
-
-// todos los datos del usuario seleccionado se podrían modificar menos el ID
-// si se modifica la pass debería ser nuevamente hasheada
-// si se modifica el email, validar que este no exista
 const updateUser = (userData) => {
   try {
-  } catch (error) {}
+    const { id, nombre, apellido, email, password } = userData
+
+    if (!id) {
+      throw new Error('Missing data')
+    }
+
+    // valida que esten los datos mínimos para actualizar un usuario
+    if (!nombre || !apellido || !email || !password) {
+      throw new Error('Missing data')
+    }
+
+    // valida que el nombre sea un string
+    // valida que el apellido sea un string
+    // valida que el email sea un string
+    if (
+      typeof nombre !== 'string' ||
+      typeof apellido !== 'string' ||
+      typeof email !== 'string'
+    ) {
+      throw new Error('Invalid data type')
+    }
+
+    // valida que el email sea un string y que no se repita
+    if (!validarEmail(email)) {
+      throw new Error('Invalid email')
+    }
+
+    // llamamos a los usuarios
+    const users = getUsers(PATH_FILE_USER)
+
+    // validamos que el usuario exista
+    const oneUser = users.find((user) => user.id === id)
+
+    if (!oneUser) {
+      throw new Error('User not found')
+    }
+
+    // validamos que el email no exista
+    const foundEmail = oneUser.find((user) => user.email === email)
+
+    if (foundEmail) {
+      throw new Error('Email already exists')
+    }
+
+    const hashedPassword = createHash('sha256').update(password).digest('hex')
+
+    if (nombre) oneUser.nombre = nombre
+    if (apellido) oneUser.apellido = apellido
+    if (email) oneUser.email = email
+    if (password) oneUser.password = hashedPassword
+
+    writeFileSync(PATH_FILE_USER, JSON.stringify(users))
+
+    return oneUser
+  } catch (error) {
+    const objError = handleError(error, PATH_FILE_ERROR)
+    return objError
+  }
 }
 
 const deleteUser = (id) => {
   try {
-  } catch (error) {}
+    if (!id) {
+      throw new Error('Missing data')
+    }
+
+    const users = getUsers(PATH_FILE_USER)
+    const userDelete = getUserById(id)
+
+    const usersFiltered = users.filter((user) => user.id !== id)
+
+    writeFileSync(PATH_FILE_USER, JSON.stringify(usersFiltered))
+
+    return userDelete
+  } catch (error) {
+    const objError = handleError(error, PATH_FILE_ERROR)
+    return objError
+  }
 }
 
-export { getUsers, getUserById, addUser, updateUser, deleteUser }
+export {
+  getUsers,
+  getUserById,
+  addUser,
+  updateUser,
+  deleteUser,
+  PATH_FILE_USER,
+  PATH_FILE_ERROR,
+}
