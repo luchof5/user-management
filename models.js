@@ -1,6 +1,7 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { randomUUID, createHash } from 'node:crypto'
 import { handleError } from './utils/handleError.js'
+import validarEmail from './utils/validateEmail.js'
 // Averiguar que importar de NODE para realizar el hash del pass
 
 // Averiguar como "activar" la lectura de las variables de entorno del archivo .env (dotenv)
@@ -25,25 +26,18 @@ const getUsers = (urlFile) => {
     }
 
     const users = JSON.parse(readFileSync(urlFile))
+
     return users
   } catch (error) {
     const objError = handleError(error, PATH_FILE_ERROR)
-
     return objError
   }
 }
 
-// const test = getUsers(PATH_FILE_USER)
-// console.log(test)
-
 const getUserById = (id) => {
   try {
     if (!id) {
-<<<<<<< HEAD
       throw new Error('Acces deneid')
-=======
-      throw new Error('ID is required')
->>>>>>> a7923cefdf8b71d919d65ae5eb810a30f3befa74
     }
 
     const users = getUsers(PATH_FILE_USER)
@@ -52,31 +46,66 @@ const getUserById = (id) => {
     if (!user) {
       throw new Error('User not found')
     }
+
     return user
   } catch (error) {
     const objError = handleError(error, PATH_FILE_ERROR)
-
     return objError
   }
 }
 
-<<<<<<< HEAD
-// console.log(getUserById('f47ac10b-58cc-4372-a567-0e02b2c3d479'))
-=======
-const test = getUserById('f47ac10b-58cc-4372-a567-0e02d479')
-console.log(test)
->>>>>>> a7923cefdf8b71d919d65ae5eb810a30f3befa74
-
-// addUser recibe un objeto con toda la data para el nuevo usuario
-// valida que esten los datos míminos para añadir un nuevo usuario
-// valida que el nombre sea un string
-// valida que el apellido sea un string
-// valida que el email sea un string y que no se repita
-// hashea la contraseña antes de registrar al usuario
 const addUser = (userData) => {
   try {
-  } catch (error) {}
+    // addUser recibe un objeto con toda la data para el nuevo usuario
+    const { nombre, apellido, email, password } = userData
+
+    // valida que esten los datos míminos para añadir un nuevo usuario
+    if (!nombre || !apellido || !email || !password) {
+      throw new Error('Missing data')
+    }
+
+    // valida que el nombre sea un string
+    // valida que el apellido sea un string
+    if (
+      typeof nombre !== 'string' ||
+      typeof apellido !== 'string' ||
+      typeof email !== 'string'
+    ) {
+      throw new Error('Invalid data type')
+    }
+
+    // valida que el email sea un string y que no se repita
+    if (!validarEmail(email)) {
+      throw new Error('Invalid email')
+    }
+
+    const users = getUsers(PATH_FILE_USER)
+
+    const findEmail = users.find((user) => user.email === email)
+
+    // hashea la contraseña antes de registrar al usuario
+    const hashedPassword = createHash('sha256').update(password).digest('hex')
+
+    const newUser = {
+      id: randomUUID(),
+      nombre,
+      apellido,
+      email,
+      password: hashedPassword,
+      isLoggedIn: false,
+    }
+
+    users.push(newUser)
+
+    writeFileSync(PATH_FILE_USER, JSON.stringify(users))
+    return newUser
+  } catch (error) {
+    const objError = handleError(error, PATH_FILE_ERROR)
+    return objError
+  }
 }
+
+console.log(addUser)
 
 // todos los datos del usuario seleccionado se podrían modificar menos el ID
 // si se modifica la pass debería ser nuevamente hasheada
