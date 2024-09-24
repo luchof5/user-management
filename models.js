@@ -12,7 +12,6 @@ const PATH_FILE_USER = process.env.PATH_FILE_USER
 const PATH_FILE_ERROR = process.env.PATH_FILE_ERROR
 
 // 2° Declarar los metodos
-
 const getUsers = (urlFile) => {
   try {
     if (!urlFile) {
@@ -42,8 +41,25 @@ const getUsers = (urlFile) => {
 
 const getUserById = (id) => {
   try {
-  } catch (error) {}
+    if (!id) {
+      throw new Error('Acces deneid')
+    }
+
+    const users = getUsers(PATH_FILE_USER)
+    const user = users.find((user) => user.id === id)
+
+    if (!user) {
+      throw new Error('User not found')
+    }
+    return user
+  } catch (error) {
+    const objError = handleError(error, PATH_FILE_ERROR)
+
+    return objError
+  }
 }
+
+// console.log(getUserById('f47ac10b-58cc-4372-a567-0e02b2c3d479'))
 
 // addUser recibe un objeto con toda la data para el nuevo usuario
 // valida que esten los datos míminos para añadir un nuevo usuario
