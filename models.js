@@ -17,17 +17,14 @@ const getUsers = (urlFile) => {
     if (!urlFile) {
       throw new Error('Acces deneid')
     }
-
     const exists = existsSync(urlFile)
 
     if (!exists) {
       writeFileSync(urlFile, JSON.stringify([]))
-
       return []
     }
 
     const users = JSON.parse(readFileSync(urlFile))
-
     return users
   } catch (error) {
     const objError = handleError(error, PATH_FILE_ERROR)
@@ -36,13 +33,17 @@ const getUsers = (urlFile) => {
   }
 }
 
-// const prueba = getUsers(PATH_FILE_USER)
-// console.log(prueba)
+// const test = getUsers(PATH_FILE_USER)
+// console.log(test)
 
 const getUserById = (id) => {
   try {
     if (!id) {
+<<<<<<< HEAD
       throw new Error('Acces deneid')
+=======
+      throw new Error('ID is required')
+>>>>>>> a7923cefdf8b71d919d65ae5eb810a30f3befa74
     }
 
     const users = getUsers(PATH_FILE_USER)
@@ -59,7 +60,12 @@ const getUserById = (id) => {
   }
 }
 
+<<<<<<< HEAD
 // console.log(getUserById('f47ac10b-58cc-4372-a567-0e02b2c3d479'))
+=======
+const test = getUserById('f47ac10b-58cc-4372-a567-0e02d479')
+console.log(test)
+>>>>>>> a7923cefdf8b71d919d65ae5eb810a30f3befa74
 
 // addUser recibe un objeto con toda la data para el nuevo usuario
 // valida que esten los datos míminos para añadir un nuevo usuario
