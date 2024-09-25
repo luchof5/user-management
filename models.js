@@ -2,12 +2,8 @@ import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { randomUUID, createHash } from 'node:crypto'
 import { handleError } from './utils/handleError.js'
 import validarEmail from './utils/validateEmail.js'
-// Averiguar que importar de NODE para realizar el hash del pass
 
-// Averiguar como "activar" la lectura de las variables de entorno del archivo .env (dotenv)
 import dotenv from 'dotenv'
-import { on } from 'node:events'
-import { get } from 'node:http'
 
 // 1° recuperar variables de entorno
 dotenv.config()
