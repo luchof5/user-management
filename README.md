@@ -16,13 +16,13 @@ Esta es una aplicación de administración de usuarios construida con Node.js. L
 1. Clona el repositorio:
 
     ```bash
-    git clone https://github.com/JuanPabloRosso/TP-1-Rosso-Juan-Pablo-Backend.git
+    git clone https://github.com/luchof5/user-management
     ```
 
 2. Navega al directorio del proyecto:
 
     ```bash
-    cd TP-1-Rosso-Juan-Pablo-Backend
+    cd user-management
 
     ```
 
