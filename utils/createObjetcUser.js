@@ -5,6 +5,10 @@ const createUserObject = (args) => {
   try {
     const [nombre, apellido, email, password] = args.slice(1)
 
+    if (args.length > 5) {
+      throw new Error('Argument exceded')
+    }
+
     return {
       nombre,
       apellido,
@@ -20,6 +24,10 @@ const createUserObject = (args) => {
 const createUpdateUserObject = (args) => {
   try {
     const [id, nombre, apellido, email, password] = args.slice(1)
+
+    if (args.length > 6) {
+      throw new Error('Argument exceded')
+    }
 
     const updatedUser = {}
     updatedUser.id = id

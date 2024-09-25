@@ -29,11 +29,19 @@ switch (option) {
     break
   case 'add':
     const newUser = createUserObject(args)
-    console.log(addUser(newUser))
+    if (!newUser.type) {
+      console.log(addUser(newUser))
+    } else {
+      console.log(newUser)
+    }
     break
   case 'update':
     const updateUserObject = createUpdateUserObject(args)
-    console.log(updateUser(updateUserObject))
+    if (!updateUserObject.type) {
+      console.log(updateUser(updateUserObject))
+    } else {
+      console.log(updateUserObject)
+    }
     break
   case 'delete':
     console.log(deleteUser(args[1]))
