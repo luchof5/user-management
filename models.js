@@ -139,15 +139,17 @@ const updateUser = (userData) => {
     // llamamos a los usuarios
     const users = getUsers(PATH_FILE_USER)
 
-    // validamos que el usuario exista
     const oneUser = users.find((user) => user.id === id)
 
     if (!oneUser) {
       throw new Error('User not found')
     }
 
+    // filtrar los usuarios
+    const filteredUsers = users.filter((user) => user.id !== id)
+
     // validamos que el email no exista
-    const foundEmail = oneUser.find((user) => user.email === email)
+    const foundEmail = filteredUsers.find((user) => user.email === email)
 
     if (foundEmail) {
       throw new Error('Email already exists')
