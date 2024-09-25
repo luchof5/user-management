@@ -1,5 +1,5 @@
 import { handleError } from './handleError.js'
-import { PATH_FILE_ERROR } from './models.js'
+import { PATH_FILE_ERROR } from '../models.js'
 
 const createUserObject = (args) => {
   try {

@@ -1,7 +1,7 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { randomUUID, createHash } from 'node:crypto'
 import { handleError } from './utils/handleError.js'
-import validarEmail from './utils/validateEmail.js'
+import { validarEmail } from './utils/validateEmail.js'
 
 import dotenv from 'dotenv'
 

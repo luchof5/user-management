@@ -14,6 +14,9 @@ import {
 import { handleError } from './utils/handleError.js'
 import { help } from './utils/help.js'
 
+const args = process.argv.splice(2)
+const option = args[0]
+
 switch (option) {
   case 'help':
     console.log(help())
